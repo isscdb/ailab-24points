@@ -41,18 +41,18 @@
 
 ### 在线体验
 
-访问 [24点游戏在线版](https://github.com/lechen-math/24points-game) 即可开始游戏。
+访问 [24点游戏在线版](http://app.cdbsoft.com/24/) 即可开始游戏。
 
 ### 本地运行
 
 1. 克隆项目到本地：
    ```bash
-   git clone https://github.com/lechen-math/24points-game.git
+   git clone https://github.com/isscdb/ailab-24points.git
    ```
 
 2. 进入项目目录：
    ```bash
-   cd 24points-game
+   cd 24points
    ```
 
 3. 使用任意HTTP服务器运行项目，例如：
