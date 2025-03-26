@@ -1,0 +1,318 @@
+/* 全局样式 */
+:root {
+    --primary-color: #4f46e5;
+    --primary-hover: #4338ca;
+    --secondary-color: #db2777;
+    --secondary-hover: #be185d;
+    --bg-gradient-from: #eff6ff;
+    --bg-gradient-to: #e0e7ff;
+    --card-bg: #ffffff;
+    --text-primary: #1f2937;
+    --text-secondary: #4b5563;
+    --text-light: #9ca3af;
+    --success-color: #10b981;
+    --error-color: #ef4444;
+    --warning-color: #f59e0b;
+    --border-radius: 0.75rem;
+    --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+    --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    --shadow-md: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    --shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+    --transition: all 0.3s ease;
+}
+
+body {
+    font-family: 'Noto Sans SC', Tahoma, Arial, Roboto, "Droid Sans", "Helvetica Neue", "Droid Sans Fallback", "Heiti SC", "Hiragino Sans GB", Simsun, sans-serif;
+    background: linear-gradient(to bottom right, var(--bg-gradient-from), var(--bg-gradient-to));
+    min-height: 100vh;
+    color: var(--text-primary);
+}
+
+/* 游戏标题动画 */
+.game-title {
+    font-family: 'Noto Serif SC', serif;
+    position: relative;
+    display: inline-block;
+    background: linear-gradient(45deg, #4f46e5, #7c3aed, #db2777);
+    background-size: 200% 200%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: gradient-animation 6s ease infinite;
+}
+
+@keyframes gradient-animation {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+/* 卡片样式 */
+.card {
+    position: relative;
+    width: 70px;
+    height: 100px;
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    user-select: none;
+    overflow: hidden;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.15);
+}
+
+.card.selected {
+    border: 3px solid var(--primary-color);
+    transform: translateY(-5px);
+}
+
+.card-value {
+    font-size: 1.8rem;
+    font-weight: bold;
+    line-height: 1;
+}
+
+.card-suit {
+    font-size: 1.5rem;
+    line-height: 1;
+    margin-top: 5px;
+}
+
+.card-suit.red {
+    color: #ef4444;
+}
+
+.card-suit.black {
+    color: #1f2937;
+}
+
+/* 游戏容器样式 */
+.game-container {
+    transition: opacity 0.5s ease, transform 0.5s ease;
+}
+
+.game-container.fade-in {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.game-container.fade-out {
+    opacity: 0;
+    transform: translateY(20px);
+}
+
+/* 结果容器样式 */
+.result-container {
+    transition: all 0.3s ease;
+}
+
+.result-container.success {
+    background-color: rgba(16, 185, 129, 0.1);
+    border-left: 4px solid var(--success-color);
+}
+
+.result-container.error {
+    background-color: rgba(239, 68, 68, 0.1);
+    border-left: 4px solid var(--error-color);
+}
+
+.result-container.warning {
+    background-color: rgba(245, 158, 11, 0.1);
+    border-left: 4px solid var(--warning-color);
+}
+
+/* 按钮悬停效果 */
+.mode-btn {
+    position: relative;
+    overflow: hidden;
+}
+
+.mode-btn::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 5px;
+    height: 5px;
+    background: rgba(255, 255, 255, 0.5);
+    opacity: 0;
+    border-radius: 100%;
+    transform: scale(1, 1) translate(-50%);
+    transform-origin: 50% 50%;
+}
+
+@keyframes ripple {
+    0% {
+        transform: scale(0, 0);
+        opacity: 0.5;
+    }
+    100% {
+        transform: scale(100, 100);
+        opacity: 0;
+    }
+}
+
+.mode-btn:focus:not(:active)::after {
+    animation: ripple 1s ease-out;
+}
+
+/* 响应式调整 */
+@media (max-width: 640px) {
+    .card {
+        width: 60px;
+        height: 85px;
+    }
+    
+    .card-value {
+        font-size: 1.5rem;
+    }
+    
+    .card-suit {
+        font-size: 1.2rem;
+    }
+}
+
+/* 动画效果 */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+    100% { transform: scale(1); }
+}
+
+@keyframes firework {
+    0% { transform: scale(0); opacity: 1; }
+    50% { transform: scale(1); opacity: 0.8; }
+    100% { transform: scale(1.5); opacity: 0; }
+}
+
+.animate-fadeIn {
+    animation: fadeIn 0.5s ease forwards;
+}
+
+.animate-pulse {
+    animation: pulse 1.5s infinite;
+}
+
+/* 计时器样式 */
+#timer {
+    font-family: monospace;
+    font-weight: bold;
+}
+
+/* 解法展示样式 */
+.solution {
+    padding: 10px;
+    margin: 5px 0;
+    background-color: rgba(79, 70, 229, 0.1);
+    border-radius: 6px;
+    font-family: monospace;
+}
+
+/* 卡片选择区域滚动条样式 */
+.card-selection .grid {
+    max-height: 300px;
+    overflow-y: auto;
+    padding: 10px;
+    scrollbar-width: thin;
+    scrollbar-color: var(--primary-color) transparent;
+}
+
+.card-selection .grid::-webkit-scrollbar {
+    width: 6px;
+}
+
+.card-selection .grid::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.card-selection .grid::-webkit-scrollbar-thumb {
+    background-color: var(--primary-color);
+    border-radius: 20px;
+}
+
+/* 虚拟键盘样式 */
+.virtual-keyboard {
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.card-btn, .op-btn, .bracket-btn, .func-btn {
+    transition: all 0.2s ease;
+}
+
+.card-btn:active, .op-btn:active, .bracket-btn:active, .func-btn:active {
+    transform: scale(0.95);
+}
+
+.card-btn.used {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+/* 祝贺动效样式 */
+.congrats-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    pointer-events: none;
+    z-index: 1000;
+    overflow: hidden;
+}
+
+.congrats-text {
+    font-size: 3.5rem;
+    font-weight: bold;
+    color: #fff;
+    text-shadow: 0 0 15px rgba(0, 0, 0, 0.6);
+    background: linear-gradient(45deg, #4f46e5, #7c3aed, #db2777, #f59e0b);
+    background-size: 300% 300%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: gradient-animation 4s ease infinite, pulse 1.2s infinite;
+    z-index: 1001;
+    padding: 20px;
+    border-radius: 15px;
+}
+
+.firework {
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    animation: firework 1s ease-out forwards;
+    z-index: 1000;
+    transform-origin: center center;
+}
+
+.confetti {
+    position: absolute;
+    width: 10px;
+    height: 4px;
+    animation: confetti-fall 3s ease-in-out forwards;
+    z-index: 999;
+}
+
+@keyframes confetti-fall {
+    0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+    50% { opacity: 1; }
+    100% { transform: translateY(1000%) rotate(720deg); opacity: 0; }
+}

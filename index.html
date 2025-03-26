@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>24点 - 趣味数学游戏</title>
+    <!-- 引入Tailwind CSS -->
+    <link href="https://cdn.staticfile.org/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
+    <!-- 引入Font Awesome -->
+    <link href="https://cdn.staticfile.org/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <!-- 引入Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;500;600;700&family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <!-- 引入自定义CSS -->
+    <link href="./style.css" rel="stylesheet">
+</head>
+<body class="bg-gradient-to-br from-blue-50 to-indigo-100 min-h-screen font-sans">
+    <div class="container mx-auto px-4 py-8">
+        <!-- 游戏标题 -->
+        <header class="text-center mb-8">
+            <h1 class="text-4xl md:text-5xl font-bold text-indigo-800 mb-2 game-title">24点挑战</h1>
+            <p class="text-lg text-gray-600">用加减乘除，算出24！</p>
+        </header>
+
+        <!-- 游戏模式选择 -->
+        <div class="game-mode-selection bg-white rounded-xl shadow-lg p-6 mb-8 max-w-md mx-auto">
+            <h2 class="text-xl font-bold text-gray-800 mb-4">选择游戏模式</h2>
+            <div class="flex flex-col sm:flex-row gap-4">
+                <button id="calculation-mode" class="mode-btn bg-indigo-600 hover:bg-indigo-700 text-white font-medium py-3 px-6 rounded-lg transition-all flex-1 flex items-center justify-center">
+                    <i class="fas fa-calculator mr-2"></i> 计算模式
+                </button>
+                <button id="challenge-mode" class="mode-btn bg-pink-600 hover:bg-pink-700 text-white font-medium py-3 px-6 rounded-lg transition-all flex-1 flex items-center justify-center">
+                    <i class="fas fa-trophy mr-2"></i> 挑战模式
+                </button>
+            </div>
+        </div>
+
+        <!-- 游戏区域 -->
+        <div id="game-area" class="hidden">
+            <!-- 计算模式界面 -->
+            <div id="calculation-area" class="hidden game-container bg-white rounded-xl shadow-lg p-6 mb-8 max-w-3xl mx-auto">
+                <h2 class="text-xl font-bold text-gray-800 mb-4">计算模式</h2>
+                <p class="text-gray-600 mb-6">选择4张牌，我们将为您计算出24点解法</p>
+                
+                <!-- 牌选择区域 -->
+                <div class="card-selection mb-6">
+                    <h3 class="text-lg font-medium text-gray-700 mb-3">选择4张牌：</h3>
+                    <div class="grid grid-cols-4 sm:grid-cols-7 md:grid-cols-9 lg:grid-cols-13 gap-2">
+                        <!-- 牌会通过JavaScript动态生成 -->
+                    </div>
+                </div>
+                
+                <!-- 已选牌展示区域 -->
+                <div class="selected-cards mb-6">
+                    <div class="flex justify-between items-center mb-3">
+                        <h3 class="text-lg font-medium text-gray-700">已选牌：</h3>
+                        <button id="clear-selected-cards" class="text-gray-500 hover:text-indigo-600 transition-colors flex items-center">
+                            <i class="fas fa-trash-alt mr-1"></i> 清空
+                        </button>
+                    </div>
+                    <div class="flex flex-wrap gap-4 min-h-[120px] p-4 bg-indigo-50 rounded-lg">
+                        <!-- 已选牌会通过JavaScript动态展示 -->
+                    </div>
+                </div>
+                
+                <!-- 计算按钮 -->
+                <div class="text-center mb-6">
+                    <button id="calculate-btn" class="bg-indigo-600 hover:bg-indigo-700 text-white font-medium py-3 px-8 rounded-lg transition-all disabled:opacity-50 disabled:cursor-not-allowed">
+                        <i class="fas fa-equals mr-2"></i> 计算24点
+                    </button>
+                </div>
+                
+                <!-- 结果展示区域 -->
+                <div id="calculation-result" class="hidden result-container p-4 rounded-lg">
+                    <!-- 结果会通过JavaScript动态展示 -->
+                </div>
+            </div>
+            
+            <!-- 挑战模式界面 -->
+            <div id="challenge-area" class="hidden game-container bg-white rounded-xl shadow-lg p-6 mb-8 max-w-3xl mx-auto">
+                <div class="flex justify-between items-center mb-4">
+                    <h2 class="text-xl font-bold text-gray-800">挑战模式</h2>
+                    <div class="flex items-center">
+                        <div class="text-sm text-gray-600 mr-4">
+                            <i class="fas fa-stopwatch mr-1"></i> <span id="timer">00:00</span>
+                        </div>
+                        <div class="text-sm text-gray-600">
+                            <i class="fas fa-star mr-1"></i> 得分: <span id="score">0</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 随机牌展示区域 -->
+                <div class="random-cards mb-6">
+                    <div class="flex flex-wrap justify-center gap-4 min-h-[150px]">
+                        <!-- 随机牌会通过JavaScript动态展示 -->
+                    </div>
+                </div>
+                
+                <!-- 计算输入区域 -->
+                <div class="calculation-input mb-6">
+                    <div class="flex flex-col sm:flex-row gap-4">
+                        <div class="flex-1">
+                            <input type="text" id="calculation-input" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500" placeholder="输入您的计算公式..." readonly>
+                            <p class="text-xs text-gray-500 mt-1">使用下方虚拟键盘输入计算公式，表达式完整时将自动提交</p>
+                        </div>
+                        <button id="submit-calculation" class="hidden bg-pink-600 hover:bg-pink-700 text-white font-medium py-3 px-6 rounded-lg transition-all">
+                            <i class="fas fa-check mr-2"></i> 提交
+                        </button>
+                    </div>
+                    
+                    <!-- 虚拟计算器键盘 -->
+                    <div class="virtual-keyboard mt-4 bg-gray-50 p-3 rounded-lg">
+                        <div class="grid grid-cols-4 gap-2">
+                            <!-- 牌值按钮 -->
+                            <button class="card-btn bg-white hover:bg-indigo-50 text-gray-800 font-medium py-2 px-4 rounded border border-gray-300 transition-all" data-value="A">A</button>
+                            <button class="card-btn bg-white hover:bg-indigo-50 text-gray-800 font-medium py-2 px-4 rounded border border-gray-300 transition-all" data-value="B">B</button>
+                            <button class="card-btn bg-white hover:bg-indigo-50 text-gray-800 font-medium py-2 px-4 rounded border border-gray-300 transition-all" data-value="C">C</button>
+                            <button class="card-btn bg-white hover:bg-indigo-50 text-gray-800 font-medium py-2 px-4 rounded border border-gray-300 transition-all" data-value="D">D</button>
+                            
+                            <!-- 运算符按钮 -->
+                            <button class="op-btn bg-indigo-100 hover:bg-indigo-200 text-indigo-800 font-medium py-2 px-4 rounded border border-indigo-200 transition-all" data-op="+">+</button>
+                            <button class="op-btn bg-indigo-100 hover:bg-indigo-200 text-indigo-800 font-medium py-2 px-4 rounded border border-indigo-200 transition-all" data-op="-">-</button>
+                            <button class="op-btn bg-indigo-100 hover:bg-indigo-200 text-indigo-800 font-medium py-2 px-4 rounded border border-indigo-200 transition-all" data-op="*">×</button>
+                            <button class="op-btn bg-indigo-100 hover:bg-indigo-200 text-indigo-800 font-medium py-2 px-4 rounded border border-indigo-200 transition-all" data-op="/">÷</button>
+                            
+                            <!-- 括号按钮 -->
+                            <button class="bracket-btn bg-pink-100 hover:bg-pink-200 text-pink-800 font-medium py-2 px-4 rounded border border-pink-200 transition-all" data-bracket="(">(</button>
+                            <button class="bracket-btn bg-pink-100 hover:bg-pink-200 text-pink-800 font-medium py-2 px-4 rounded border border-pink-200 transition-all" data-bracket=")">)</button>
+                            
+                            <!-- 功能按钮 -->
+                            <button id="backspace-btn" class="func-btn bg-gray-200 hover:bg-gray-300 text-gray-800 font-medium py-2 px-4 rounded border border-gray-300 transition-all col-span-1">
+                                <i class="fas fa-backspace"></i>
+                            </button>
+                            <button id="clear-btn" class="func-btn bg-gray-200 hover:bg-gray-300 text-gray-800 font-medium py-2 px-4 rounded border border-gray-300 transition-all col-span-1">
+                                清空
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 操作按钮 -->
+                <div class="flex flex-col sm:flex-row gap-4">
+                    <button id="new-challenge" class="bg-indigo-600 hover:bg-indigo-700 text-white font-medium py-3 px-6 rounded-lg transition-all flex-1 flex items-center justify-center">
+                        <i class="fas fa-sync-alt mr-2"></i> 新的挑战
+                    </button>
+                    <button id="show-solution" class="bg-gray-600 hover:bg-gray-700 text-white font-medium py-3 px-6 rounded-lg transition-all flex-1 flex items-center justify-center">
+                        <i class="fas fa-lightbulb mr-2"></i> 查看解法
+                    </button>
+                </div>
+                
+                <!-- 结果展示区域 -->
+                <div id="challenge-result" class="hidden result-container p-4 rounded-lg mt-6">
+                    <!-- 结果会通过JavaScript动态展示 -->
+                </div>
+            </div>
+        </div>
+        
+        <!-- 返回按钮 -->
+        <div id="back-button" class="hidden text-center mt-6 mb-6">
+            <button class="bg-gray-500 hover:bg-gray-600 text-white font-medium py-2 px-4 rounded-lg transition-all">
+                <i class="fas fa-arrow-left mr-2"></i> 返回选择
+            </button>
+        </div>
+        
+        <!-- 游戏说明 -->
+        <div class="game-instructions bg-white rounded-xl shadow-lg p-6 max-w-3xl mx-auto">
+            <h2 class="text-xl font-bold text-gray-800 mb-4">游戏说明</h2>
+            <div class="text-gray-600">
+                <p class="mb-3"><strong>24点</strong>是一种数学益智游戏，目标是使用四则运算（加、减、乘、除）将4个数字计算得到24。</p>
+                <p class="mb-3"><strong>计算模式：</strong>您可以选择任意4张牌，系统会计算出所有可能的24点解法。</p>
+                <p class="mb-3"><strong>挑战模式：</strong>系统随机生成4张牌，您需要在规定时间内找出24点解法。</p>
+                <p class="mb-3"><strong>规则说明：</strong></p>
+                <ul class="list-disc pl-5 mb-3">
+                    <li>必须使用所有4张牌，每张牌只能使用一次</li>
+                    <li>只能使用加(+)、减(-)、乘(*)、除(/)四则运算</li>
+                    <li>可以使用括号改变运算优先级</li>
+                    <li>A代表1，J、Q、K分别代表11、12、13</li>
+                </ul>
+            </div>
+        </div>
+        
+        <!-- 页脚 -->
+        <footer class="text-center text-gray-500 text-sm mt-8">
+            <p>© 2025 <span id="author-link" class="cursor-pointer hover:text-indigo-600 transition-colors">乐辰@GDFX</span>. 24点挑战 | 一个有趣的数学游戏</p>
+        </footer>
+        
+        <!-- 作者信息模态框 -->
+        <div id="author-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-[1001] hidden">
+            <div class="bg-white rounded-xl shadow-lg p-6 max-w-md mx-auto relative animate-fadeIn">
+                <button id="close-modal" class="absolute top-3 right-3 text-gray-500 hover:text-gray-700">
+                    <i class="fas fa-times"></i>
+                </button>
+                <h2 class="text-xl font-bold text-gray-800 mb-4">关于作者</h2>
+                <div class="text-gray-600">
+                    <p class="mb-2"><strong>姓名：</strong>乐辰</p>
+                    <p class="mb-2"><strong>年级：</strong>六年级</p>
+                    <p class="mb-2"><strong>学校：</strong>广大附小</p>
+                    <p class="mb-2"><strong>爱好：</strong>数学/编程爱好者</p>
+                    <p class="mb-2"><strong>联系：</strong>13535088091</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 引入JavaScript -->
+    <script src="./script.js"></script>
+    <script src="./congratulation.js"></script>
+    <script src="./sounds.js"></script>
+</body>
+</html>
